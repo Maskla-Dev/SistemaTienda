@@ -3,7 +3,6 @@
 //
 
 #include "Guardia.h"
-#include "Utils/SemLogic.h"
 #include "Utils/Utils.h"
 #include "Utils/ImpresoraMensajes.h"
 #include <stdio.h>
@@ -17,10 +16,10 @@ bool iniciarTurnoGuardia() {
      * Espera conexion de un cliente para procesar su informacion
      */
     imprimirMensaje(GUARDIA_TAG, "Guardia reportandose a su puesto...\n");
-    imprimirMensaje(GUARDIA_TAG, "");
     NODO_DATOS *usuarios_registrados;
     crearArchivo("files", ARCHIVO_USUARIOS_NOM);
     usuarios_registrados = recuperarLista();
+    imprimirMensaje(GUARDIA_TAG, "Lista de usuarios recuperada exitosamente.\n");
     iniciarOperaciones(usuarios_registrados);
     return true;
 }
@@ -28,8 +27,10 @@ bool iniciarTurnoGuardia() {
 void iniciarOperaciones(LISTA_USUARIOS *lista_usuarios) {
     PIPE *canal_clientes = getPipe(CANAL_MENSAJES_CLIENTE_ID);
     PIPE *canal_tienda = getPipe(CANAL_MENSAJES_TIENDA_ID);
+    imprimirMensaje(GUARDIA_TAG, "Canales de informacion obtenidos..\n");
     PeticionGuardia *peticion;
     while (true) {
+        imprimirMensaje(GUARDIA_TAG, "Esperando a que un cliente se forme y sea validado...\n");
         readMsg(canal_clientes->msg_id, &canal_clientes->mbuf, 1);
         peticion = descomponerPeticion(canal_clientes->mbuf.mText);
         procesarPeticion(peticion, lista_usuarios, canal_clientes);
@@ -55,6 +56,7 @@ NODO_DATOS *recuperarLista() {
     }
     //Obtencion de datos del archivo en una sola cadena
     tam_contenido = obtenerTamArchivo(archivo) + 1;
+    contenido_archivo = (char *) malloc(sizeof(char) * tam_contenido);
     memset(contenido_archivo, '\0', tam_contenido);
     contenido_archivo = malloc(sizeof(char) * tam_contenido);
     fgets(contenido_archivo, (int) tam_contenido, archivo);
@@ -126,6 +128,7 @@ void extraerDatosUsuario(char *fuente, USUARIO *objetivo) {
 }
 
 char *buscarUsuario(char *nombre_usuario, NODO_DATOS *lista) {
+    imprimirMensaje(GUARDIA_TAG, "Buscando usuario...\n");
     while (lista->siguiente != NULL) {
         if (strcmp(lista->usuario->usuario, nombre_usuario) == 0)
             return lista->usuario->password;
@@ -135,6 +138,7 @@ char *buscarUsuario(char *nombre_usuario, NODO_DATOS *lista) {
 }
 
 PeticionGuardia *descomponerPeticion(char *mensaje_sin_procesar) {
+    imprimirMensaje(GUARDIA_TAG, "Procesando peticion...\n");
     PeticionGuardia *peticion = (PeticionGuardia *) malloc(sizeof(PeticionGuardia));
     peticion->numero_usuario = strtoul(mensaje_sin_procesar, &mensaje_sin_procesar, 10);
     mensaje_sin_procesar = mensaje_sin_procesar + 1;
@@ -148,28 +152,36 @@ void procesarPeticion(PeticionGuardia *peticion, LISTA_USUARIOS *lista, PIPE *ca
     char *password;
     switch (peticion->operacion) {
         case 'A':
+            imprimirMensaje(GUARDIA_TAG, "Peticion de autentificacion.\n");
             password = buscarUsuario(peticion->datos.usuario, lista);
             if (password != NULL)
                 if (strcmp(password, peticion->datos.password) == 0) {
+                    imprimirMensaje(GUARDIA_TAG, "Datos de autentificacion correctos.\n");
                     sendMsg(canal_comunicacion->msg_id, MSG_AUTENTIFICACION_CORRECTA,
                             (long) peticion->numero_usuario + 1);
                 } else {
-                    sendMsg(canal_comunicacion->msg_id, MSG_DATOS_INCORRECTOS, (long) peticion->numero_usuario + 1);
+                    imprimirMensaje(GUARDIA_TAG, "Datos de autentificacion incorrectos.\n");
+                    sendMsg(canal_comunicacion->msg_id, MSG_DATOS_INCORRECTOS, (long) peticion->numero_usuario);
                 }
             break;
         case 'R':
+            imprimirMensaje(GUARDIA_TAG, "Peticion de registro.\n");
             if (buscarUsuario(peticion->datos.usuario, lista) == NULL) {
+                imprimirMensaje(GUARDIA_TAG, "El usuario no existe, se puede registrar.\n");
                 agregarUsuarioLista(&peticion->datos, &lista);
-                sendMsg(canal_comunicacion->msg_id, MSG_AUTENTIFICACION_CORRECTA,
-                        (long) peticion->numero_usuario + 1);
+                sendMsg(canal_comunicacion->msg_id, MSG_REGISTRO_CORRECTO,
+                        (long) peticion->numero_usuario);
             } else {
-                sendMsg(canal_comunicacion->msg_id, MSG_DATOS_INCORRECTOS, (long) peticion->numero_usuario + 1);
+                imprimirMensaje(GUARDIA_TAG, "El usuario que quiere registrarse ya existe.\n");
+                sendMsg(canal_comunicacion->msg_id, MSG_DATOS_INCORRECTOS, (long) peticion->numero_usuario);
             }
             break;
     }
+    imprimirMensaje(GUARDIA_TAG, "Peticion procesada correctamente.\n");
 }
 
 void agregarUsuarioLista(USUARIO *usuario, LISTA_USUARIOS **lista_usuarios) {
+    imprimirMensaje(GUARDIA_TAG, "Agregando usuario a la lista.\n");
     NODO_DATOS *nodo = (NODO_DATOS *) malloc(sizeof(NODO_DATOS));
     nodo->usuario = (USUARIO *) malloc(sizeof(USUARIO));
     strcpy(nodo->usuario->usuario, usuario->usuario);

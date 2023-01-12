@@ -10,10 +10,10 @@
 
 #define EMPLOYEE_MESSAGE_FORMAT "[%s | ID %d] : %s"
 
-//Imprime un mensaje en la salida estandar del sistema
+//Imprime un mensaje en la salida estandar, el texto impreso incluye informacion del agente quien imprime el mensaje
 void imprimirMensaje(char *, char *);
 
-//
+//Imrprime un mensaje en la salida de errores, el texto impreso incluye informacion del agente quien imprime el mensaje
 void imprimirError(char *, char *);
 
 #endif //SISTEMATIENDA_IMPRESORAMENSAJES_H

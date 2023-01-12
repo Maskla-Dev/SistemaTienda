@@ -20,6 +20,7 @@ int main() {
     fprintf(stdout, "Pasando a ser atendido por el guardia\n");
     iniciarEtapaAutenticacion(numero_cliente, canal_clientes);
     //Proceso de conexion con el vendedor
+    fprintf(stdout, "Formandose con el vendedor para poder comprar...");
     return EXIT_SUCCESS;
 }
 
@@ -110,10 +111,10 @@ bool registrarse(size_t numero_cliente, PIPE *canal_mensajeria) {
     introducirDatos(numero_cliente, canal_mensajeria, 'R');
     bandera = validarMensajeGuardia(numero_cliente, canal_mensajeria, MSG_REGISTRO_CORRECTO);
     if (bandera) {
-        fprintf(stdout, "Bienvenido!");
+        fprintf(stdout, "Bienvenido!\n");
         return true;
     }
-    fprintf(stdout, "Usuario ya existe, intente con un usuario nuevo o identifiquese correctamente.");
+    fprintf(stdout, "Usuario ya existe, intente con un usuario nuevo o identifiquese correctamente.\n");
     return false;
 }
 
@@ -127,7 +128,7 @@ void introducirDatos(size_t numero_cliente, PIPE *canal_mensajeria, char codigo_
     scanf("%s", usuario);
     fprintf(stdout, "Introduzca password (maximo 25 caracteres)\n");
     scanf("%s", password);
-    sprintf(canal_mensajeria->mbuf.mText, "%lu|%c-%s\n%s\n", numero_cliente + 1, codigo_operacion, usuario, password);
+    sprintf(canal_mensajeria->mbuf.mText, "%lu|%c-%s:%s\n", numero_cliente + 1, codigo_operacion, usuario, password);
     sendMsg(canal_mensajeria->msg_id, canal_mensajeria->mbuf.mText, 1);
 }
 

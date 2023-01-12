@@ -18,11 +18,6 @@ typedef struct Pipe {
     MBUF mbuf;
 } PIPE;
 
-typedef struct ServerData {
-    SEMAPHORE *semset;
-    Customers *customers;
-} TIENDA;
-
 typedef struct CustomerDispatcher {
     SEMAPHORE *semset;
     PIPE *msgqueue;
@@ -40,14 +35,6 @@ long obtenerTamArchivo(FILE *);
 //Return key for semget, shmget and msgget
 key_t getKey(char *name, int id);
 
-//Returns server data: semaphores, seats and customers count
-TIENDA *getServerData(bool is_read_only);
-
-//Read access to customer_count
-size_t readCustomerCount(SEMAPHORE *semset, Customers *customers);
-
-//Increase customer_count by value arg
-void incrementCustomerCount(SEMAPHORE *semset, Customers *customers, long value);
 
 //Returns string reference for customer-dispatcher name
 char *getConnectionName(size_t number);

@@ -3,3 +3,8 @@
 //
 
 #include "Asistente de Compra.h"
+#include <stdlib.h>
+
+bool iniciarTurnoAsistente() {
+    exit(EXIT_SUCCESS);
+}

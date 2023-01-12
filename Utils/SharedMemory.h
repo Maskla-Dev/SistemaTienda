@@ -10,10 +10,7 @@
 #include <sys/shm.h>
 #include <sys/types.h>
 
-#define TOTAL_ROWS 7
-#define TOTAL_COLUMNS 8
 #define S_RWUSR 0600
-#define AIRLINE_DATA_NAME "Airlineshared\0"
 #define UNDEFINED_MEM (-1)
 
 #define REGION_CONTEO_CLIENTES_ID "ConteoClientes\0"
