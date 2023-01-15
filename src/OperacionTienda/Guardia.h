@@ -10,6 +10,14 @@
 #include "Utils/SemLogic.h"
 #include "Utils/Utils.h"
 
+/**
+ * El guardia se encarga de validar las credenciales del cliente
+ * Verifica si el cliente se encuentra en la base de datos
+ * Registra si es un cliente nuevo
+ * Comunica al supervisor la llegada de un cliente
+ *
+ */
+
 #define GUARDIA_TAG "Guardia\0"
 #define ARCHIVO_USUARIOS_NOM "ListaUsuarios\0"
 

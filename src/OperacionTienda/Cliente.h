@@ -15,6 +15,8 @@ typedef struct Cliente {
     PIPE *canal_clientes;
 } CLIENTE;
 
+void iniciarCliente();
+
 //Imprime un caracter tantas veces se especifique el variable tam en pantalla
 void imprimirCaracter(char, size_t);
 

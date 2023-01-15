@@ -21,6 +21,11 @@ typedef struct mbuf {
     char mText[MAX_BUFFER_LENGTH];
 } MBUF;
 
+
+typedef enum AgentesTienda {
+    supervisor, guardia, asistente, vendedor
+} AgentesTienda;
+
 MSGID getMsgid(char *name, int id);
 
 int sendMsg(MSGID msg_id, char *message, long id);

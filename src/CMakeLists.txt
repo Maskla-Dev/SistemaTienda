@@ -1,0 +1,5 @@
+add_subdirectory(OperacionTienda)
+add_executable(Tienda main_tienda.c)
+add_executable(Cliente main_cliente.c)
+target_link_libraries(Tienda PRIVATE OperacionTienda)
+target_link_libraries(Cliente PRIVATE Utils)

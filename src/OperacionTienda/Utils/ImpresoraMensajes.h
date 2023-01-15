@@ -8,7 +8,7 @@
 #include <unistd.h>
 #include <stdbool.h>
 
-#define EMPLOYEE_MESSAGE_FORMAT "[%s | ID %d] : %s"
+#define EMPLOYEE_MESSAGE_FORMAT "[%s | ID %d] : %s\n"
 
 //Imprime un mensaje en la salida estandar, el texto impreso incluye informacion del agente quien imprime el mensaje
 void imprimirMensaje(char *, char *);

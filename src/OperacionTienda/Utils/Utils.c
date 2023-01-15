@@ -55,3 +55,7 @@ PIPE *getPipe(char *path_name) {
     pipe->msg_id = msg_id;
     return pipe;
 }
+
+long obtenerCanal(size_t entidad) {
+    return ((long) entidad) + 1;
+}

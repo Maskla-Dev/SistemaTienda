@@ -8,7 +8,7 @@
 #include "Guardia.h"
 #include "Cliente.h"
 
-int main() {
+void iniciarCliente() {
     char *banner = "| Bienvenido a Tiendas Tito |";
     size_t numero_cliente;
     imprimirCaracter('=', strlen(banner));
@@ -21,7 +21,6 @@ int main() {
     iniciarEtapaAutenticacion(numero_cliente, canal_clientes);
     //Proceso de conexion con el vendedor
     fprintf(stdout, "Formandose con el vendedor para poder comprar...");
-    return EXIT_SUCCESS;
 }
 
 void iniciarEtapaAutenticacion(size_t numero_cliente, PIPE *canal_mensajeria) {

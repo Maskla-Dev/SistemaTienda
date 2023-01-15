@@ -23,11 +23,11 @@
 #define SEM_PERMS 0644
 #endif
 
-#define NUM_RECURSOS_COMPARTIDOS 1
+#define NUM_RECURSOS_COMPARTIDOS 2
 #define RECURSOS_COMPARTIDOS_ID "RecursosCompartidos\0"
 
 typedef enum RecursosCompartidos {
-    conteo_clientes
+    conteo_clientes, inventario
 } RecursosCompartidos;
 
 typedef int SEMID;

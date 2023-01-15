@@ -123,7 +123,7 @@ void extraerDatosUsuario(char *fuente, USUARIO *objetivo) {
     size_t tamano_nombre = posicion - fuente;
     memset(objetivo->usuario, '\0', 25);
     memset(objetivo->password, '\0', 25);
-    strncpy(objetivo->usuario, fuente, tamano_nombre - 1);
+    strncpy(objetivo->usuario, fuente, tamano_nombre);
     strcpy(objetivo->password, fuente + tamano_nombre + 1);
 }
 
@@ -143,7 +143,7 @@ PeticionGuardia *descomponerPeticion(char *mensaje_sin_procesar) {
     peticion->numero_usuario = strtoul(mensaje_sin_procesar, &mensaje_sin_procesar, 10);
     mensaje_sin_procesar = mensaje_sin_procesar + 1;
     peticion->operacion = *(mensaje_sin_procesar);
-    mensaje_sin_procesar = mensaje_sin_procesar + 1;
+    mensaje_sin_procesar = mensaje_sin_procesar + 2;
     extraerDatosUsuario(mensaje_sin_procesar, &peticion->datos);
     return peticion;
 }

@@ -25,6 +25,8 @@ typedef struct CustomerDispatcher {
 
 typedef struct stat DirStatus;
 
+long obtenerCanal(size_t entidad);
+
 //Crea un archivo, asegura que la ruta exista, de no ser asi la crear,
 //de igual forma verifica si el archivo existe, de no ser asi lo crea.
 void crearArchivo(char *, char *);
