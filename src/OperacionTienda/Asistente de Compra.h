@@ -11,6 +11,16 @@
 
 #define ASISTENTE_COMPRA_TAG "AsistenteCompra\0"
 
+/**
+ * Se encarga de gestionar los carritos para cada cliente
+ * Crea un nuevo carrito
+ * Agrega articulos al carrito
+ * Quita articulos al carrito
+ * Obtiene el total de la cuenta
+ * Elimina carritos
+ *
+ */
+
 typedef struct Carrito {
     size_t cliente;
     ListaArticulos *lista_articulos;

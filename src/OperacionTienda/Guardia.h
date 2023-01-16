@@ -9,13 +9,13 @@
 #include <stddef.h>
 #include "Utils/SemLogic.h"
 #include "Utils/Utils.h"
+#include "Supervisor.h"
 
 /**
- * El guardia se encarga de validar las credenciales del cliente
- * Verifica si el cliente se encuentra en la base de datos
- * Registra si es un cliente nuevo
- * Comunica al supervisor la llegada de un cliente
- *
+ * 1 El guardia se encarga de validar las credenciales del cliente
+ * 2 Verifica si el cliente se encuentra en la base de datos
+ * 3 Registra si es un cliente nuevo
+ * 4 Comunica al supervisor la llegada de un cliente
  */
 
 #define GUARDIA_TAG "Guardia\0"
@@ -35,49 +35,45 @@ typedef struct nodo_datos {
     struct nodo_datos *siguiente;
 } NODO_DATOS, LISTA_USUARIOS;
 
-typedef struct CadenaUsuario {
-    char *datos_usuario;
-    struct CadenaUsuario *siguiente;
-} NODO_CADENA_DATOS;
-
 typedef struct PeticionGuardia {
     size_t numero_usuario;
     char operacion;
     USUARIO datos;
 } PeticionGuardia;
 
-//Inicia las operaciones correspondientes a la entidad guardia
-bool iniciarTurnoGuardia();
+//Desde una cadena de caracteres recupera la informacion del nombre de usuario y su password
+void extraerDatosUsuario(char *, USUARIO *);
 
-//Inicia las funciones principales del guardia: recibir identificaciones y evaluarlas
-void iniciarOperaciones(LISTA_USUARIOS *);
-
-//Obtiene la directiva desde un mensaje
-
+//De la cadena de texto obtienes los datos de una peticion
+PeticionGuardia *descomponerPeticion(char *);
 
 //Recupera los usuarios desde el archivo de usuarios
 NODO_DATOS *recuperarLista();
 
-//De la estructura de usuarios, la almacena en un archivo
-void guardarLista(NODO_DATOS *);
-
-//Agrega un usuario a la lista de usuarios
-void agregarUsuarioLista(USUARIO *, LISTA_USUARIOS **);
-
 //Obtiene un usuario de la lista de usuarios
 char *buscarUsuario(char *, NODO_DATOS *);
 
-//Divide una cadena de texto en la informacion de usuarios sin procesar
-NODO_CADENA_DATOS *separarUsuarios(char *);
+//Agrega un usuario a la lista de usuarios
+void agregarUsuarioLista(USUARIO *, LISTA_USUARIOS *);
 
-//Construye la lista de usuarios desde cadenas de caracteres sin procesar
-NODO_DATOS *obtenerListaUsuarios(NODO_CADENA_DATOS *);
+//De la estructura de usuarios, la almacena en un archivo
+void guardarLista(LISTA_USUARIOS *);
 
-//Desde una cadena de caracteres recupera la informacion del nombre de usuario y su password
-void extraerDatosUsuario(char *, USUARIO *);
+//Realiza actividades a partir de una peticion
+void procesarPeticion(PeticionGuardia *peticion, LISTA_USUARIOS *, PIPE *, PIPE *);
 
-void procesarPeticion(PeticionGuardia *peticion, LISTA_USUARIOS *, PIPE *);
+//Inicia las operaciones correspondientes a la entidad guardia
+bool iniciarTurnoGuardia(DatosSupervisor *datos);
 
-PeticionGuardia *descomponerPeticion(char *);
+//Inicia las funciones principales del guardia: recibir identificaciones y evaluarlas
+void iniciarOperaciones(LISTA_USUARIOS *lista, DatosSupervisor *datos);
+
+//Imprime un mensaje a nombre del guardia
+void mensajeGuardia(char *);
+
+//Imrpime un error a nombre del guardia
+void errorGuardia(char *);
+
+void limpiarArchivo();
 
 #endif //SISTEMATIENDA_GUARDIA_H

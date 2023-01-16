@@ -35,7 +35,7 @@ void errorSupervisor(char *);
 void iniciarSupervisor();
 
 //Crea un proceso hijo cuyo rol es el guardia
-bool registrarGuardia();
+bool registrarGuardia(DatosSupervisor *datos);
 
 //Crea procesos hijos cuyos roles son de vendedor
 bool registrarVendedores(size_t);

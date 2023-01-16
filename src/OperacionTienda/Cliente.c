@@ -8,6 +8,8 @@
 #include "Guardia.h"
 #include "Cliente.h"
 
+//TODO: Canal 1 de clientes es para el guardia, requiere offset de 4 + n vendedores
+
 void iniciarCliente() {
     char *banner = "| Bienvenido a Tiendas Tito |";
     size_t numero_cliente;

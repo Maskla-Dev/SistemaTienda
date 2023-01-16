@@ -21,7 +21,7 @@ void iniciarSupervisor() {
     DatosSupervisor datos;
     iniciarRecursos(&datos);
     //Canal de comunicacion interno del sistema
-    if (registrarGuardia()) {
+    if (registrarGuardia(&datos)) {
         if (registrarVendedores(NUMERO_VENDEDORES) && registrarAsistenteCompras()) {
             while (true) {
                 direccionarCliente(&datos);
@@ -74,7 +74,7 @@ void errorSupervisor(char *error) {
     imprimirError(SUPERVISOR_TAG, error);
 }
 
-bool registrarGuardia() {
+bool registrarGuardia(DatosSupervisor *datos) {
     pid_t pid;
     imprimirMensaje(SUPERVISOR_TAG, "Esperando a que el guardia inicie su turno...\n");
     pid = fork();
@@ -83,7 +83,7 @@ bool registrarGuardia() {
             imprimirError(SUPERVISOR_TAG, "Guardia no se ha reportado a su puesto.\n");
             return false;
         case 0:
-            return iniciarTurnoGuardia();
+            return iniciarTurnoGuardia(datos);
         default:
             imprimirMensaje(SUPERVISOR_TAG, "Guardia se ha reportado a su puesto.\n");
             return true;

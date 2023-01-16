@@ -13,10 +13,9 @@
 
 void crearArchivo(char *ruta, char *nombre) {
     DIR *dir = opendir(ruta);
-    DirStatus path_status = {0};
     int file;
     if (!dir)
-        mkdir("files", 0700);
+        mkdir(ruta, 0700);
     else
         closedir(dir);
     if (access(nombre, F_OK) == -1) {

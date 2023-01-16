@@ -15,24 +15,41 @@
 typedef struct Articulo {
     char nombre[255];
     size_t cantidad;
-    struct Articulo *siguiente;
     size_t precio;
+    struct Articulo *siguiente;
 } Articulo, ListaArticulos;
+
+/**
+ * Se encarga de procesar las compras
+ * Obtiene el catalogo y lo devuelve al cliente
+ * Actualiza el estado del inventario (agregar o quitar)
+ *
+ */
+
+//Obtiene la lista de articulos para vender
+ListaArticulos *obtenerInventario(size_t numero_vendedor);
+
+//Busca un articulo en la lista
+Articulo *buscarArticulo(char *nombre, ListaArticulos *lista);
+
 
 void iniciarTurnoVendedor(size_t);
 
 void obtenerNombreVendedor(size_t numero_vendedor, char *contenedor);
 
-Articulo *buscarArticulo(char *nombre, ListaArticulos *lista);
-
 void descontarArticulo(ListaArticulos *lista, char *nombre, size_t cantidad);
 
 void agregarArticulo(ListaArticulos *lista, char *nombre, size_t cantidad);
 
-ListaArticulos *obterListaArticulos();
 
 void actualizarListaArticulos(ListaArticulos *lista);
 
 void devolverListaArticulos(ListaArticulos *lista, PIPE *canal_clientes);
+
+void limpiarInventario();
+
+void vendedorMensaje(char *, size_t);
+
+void vendedorError(char *, size_t);
 
 #endif //SISTEMATIENDA_VENDEDOR_H
